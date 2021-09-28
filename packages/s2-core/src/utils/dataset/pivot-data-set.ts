@@ -1,5 +1,5 @@
 import { DataType } from '@/data-set/interface';
-import { set, map, isUndefined } from 'lodash';
+import { set, map, reduce, isUndefined } from 'lodash';
 import {
   DataPathParams,
   PivotMeta,
@@ -48,6 +48,7 @@ export function transformIndexesData(params: Param) {
     indexesData,
     rowPivotMeta,
     colPivotMeta,
+    sortedDimensionValues,
   };
 }
 
@@ -162,4 +163,22 @@ export function getDataPath(params: DataPathParams) {
   const result = rowPath.concat(...colPath);
 
   return result;
+}
+
+/**
+ * 获取查询结果中的纬度值
+ * @param dimensions [province, city]
+ * @param query { province: '四川省', city: '成都市', type: '办公用品' }
+ * @returns ['四川省', '成都市']
+ */
+export function getQueryDimValues (dimensions: string[], query: DataType): string[] {
+  return reduce(
+    dimensions,
+    (res: string[], dimension: string) => {
+      // push undefined when not exist
+      res.push(query[dimension]);
+      return res;
+    },
+    [],
+  );
 }

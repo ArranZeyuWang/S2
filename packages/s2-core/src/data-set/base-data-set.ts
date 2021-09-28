@@ -45,6 +45,7 @@ export abstract class BaseDataSet {
 
   // 交叉表入口对象实例
   protected spreadsheet: SpreadSheet;
+  
 
   public constructor(spreadsheet: SpreadSheet) {
     this.spreadsheet = spreadsheet;
@@ -53,9 +54,9 @@ export abstract class BaseDataSet {
   /**
    * 查找字段信息
    */
-  public getFieldMeta = memoize((field: string): Meta => {
+  public getFieldMeta(field: string): Meta {
     return find(this.meta, (m: Meta) => m.field === field);
-  });
+  };
 
   /**
    * 获得字段名称
